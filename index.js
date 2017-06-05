@@ -46,6 +46,24 @@ hexo.extend.filter.register('after_post_render', function(data){
           console.info("update link as:-->"+config.root + link + src);
         }
       });
+      $('a').each(function(){
+		// For windows style path, we replace '\' to '/'.
+        var src = $(this).attr('href').replace('\\', '/');
+        if(!/http[s]*.*|\/\/.*/.test(src)){
+		  // For "about" page, the first part of "src" can't be removed.
+		  // In addition, to support multi-level local directory.
+		  var linkArray = link.split('/').filter(function(elem){
+		    return elem != '';
+		  });
+		  var srcArray = src.split('/').filter(function(elem){
+		    return elem != '';
+		  });
+		  if(linkArray[linkArray.length - 1] == srcArray[0])
+		    srcArray.shift();
+          src = srcArray.join('/');
+          $(this).attr('href', '/' + link + src);
+        }
+      });
       data[key] = $.html();
     }
   }
