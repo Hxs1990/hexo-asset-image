@@ -25,30 +25,32 @@ hexo.extend.filter.register('after_post_render', function(data){
         lowerCaseTags: false,
         decodeEntities: false
       });
-
       $('img').each(function(){
 		// For windows style path, we replace '\' to '/'.
         var src = $(this).attr('src').replace('\\', '/');
-        if(!/http[s]*.*|\/\/.*/.test(src) &&
-           !/^\s*\//.test(src)) {
+        console.log(link);
+        console.log(src);
+        if(!/http[s]*.*|\/\/.*/.test(src)){
 		  // For "about" page, the first part of "src" can't be removed.
 		  // In addition, to support multi-level local directory.
 		  var linkArray = link.split('/').filter(function(elem){
 		    return elem != '';
 		  });
 		  var srcArray = src.split('/').filter(function(elem){
-		    return elem != '' && elem != '.';
+		    return elem != '';
 		  });
-		  if(srcArray.length > 1)
+		  if(linkArray[linkArray.length - 1] == srcArray[0])
 		    srcArray.shift();
           src = srcArray.join('/');
-          $(this).attr('src', config.root + link + src);
-          console.info("update link as:-->"+config.root + link + src);
+          $(this).attr('src', '/' + link + src);
+          console.info("update link as:-->"+link + src);
         }
       });
       $('a').each(function(){
 		// For windows style path, we replace '\' to '/'.
         var src = $(this).attr('href').replace('\\', '/');
+        console.log(link);
+        console.log(src);
         if(!/http[s]*.*|\/\/.*/.test(src)){
 		  // For "about" page, the first part of "src" can't be removed.
 		  // In addition, to support multi-level local directory.
