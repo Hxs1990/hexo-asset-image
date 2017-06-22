@@ -26,10 +26,13 @@ hexo.extend.filter.register('after_post_render', function(data){
         decodeEntities: false
       });
       $('img').each(function(){
-		// For windows style path, we replace '\' to '/'.
+    // For windows style path, we replace '\' to '/'.
+        if(!$(this).attr('src')) {
+          return;
+        }
         var src = $(this).attr('src').replace('\\', '/');
-        //console.log(link);
-        //console.log(src);
+        console.log(link);
+        console.log(src);
         if(!/http[s]*.*|\/\/.*/.test(src)){
 		  // For "about" page, the first part of "src" can't be removed.
 		  // In addition, to support multi-level local directory.
@@ -47,10 +50,13 @@ hexo.extend.filter.register('after_post_render', function(data){
         }
       });
       $('a').each(function(){
-		// For windows style path, we replace '\' to '/'.
+    // For windows style path, we replace '\' to '/'.
+        if(!$(this).attr('href')) {
+          return;
+        }
         var src = $(this).attr('href').replace('\\', '/');
-        //console.log(link);
-        //console.log(src);
+        console.log(link);
+        console.log(src);
         if(!/http[s]*.*|\/\/.*/.test(src)){
 		  // For "about" page, the first part of "src" can't be removed.
 		  // In addition, to support multi-level local directory.
@@ -64,7 +70,6 @@ hexo.extend.filter.register('after_post_render', function(data){
 		    srcArray.shift();
           src = srcArray.join('/');
           $(this).attr('href', '/' + link + src);
-	  console.info("update link as:-->"+link + src);
         }
       });
       data[key] = $.html();
